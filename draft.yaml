@@ -1,0 +1,47 @@
+models:
+  Product:
+    pn: string
+    description: text
+    price: decimal:8,2 nullable
+    class: string
+    year: unsignedInteger
+
+  Customer:
+    sap_no: unsignedInteger
+    name_chs: string
+    name_eng: string
+    locate: string
+    group: unsignedInteger
+
+  ProductModel:
+    name: string
+    class: string
+
+  Report:
+    engineer_name: string
+    job_region: string
+    cst_sap_no: unsignedInteger
+    cst_name_chs: string
+    cst_name_eng: string
+    product_model: string
+    product_class: string
+    product_errcode: string:500
+    product_catsn: string:500
+    job_content: text nullable
+    job_notes: string:500 nullable
+    in_date: date
+    done_date: date
+    service_type: string
+    spare_usage: json
+    relationships:
+      hasMany: Attachment
+  
+  Attachment:
+    report_id: unsignedBigInteger
+    file_name: string
+    file_path: string
+    comment: string
+    relationships:
+      belongsTo: Report
+
+seeders: Product, Customer, Report
