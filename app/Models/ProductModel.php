@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ProductClass;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
@@ -23,24 +24,20 @@ class ProductModel extends Model
         'class' => ProductClass::class,
     ];
 
+    /**
+     * getForm function
+     *
+     * @return array
+     */
     public static function getForm(): array
     {
         return [
-            TextInput::make('pn')
+            TextInput::make('name')
                 ->required()
                 ->maxLength(255),
-            Textarea::make('description')
+            Select::make('class')
                 ->required()
-                ->columnSpanFull(),
-            TextInput::make('price')
-                ->numeric()
-                ->prefix('$'),
-            TextInput::make('class')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('year')
-                ->required()
-                ->numeric(),
+                ->options(ProductClass::class),
         ];;
     }
 }

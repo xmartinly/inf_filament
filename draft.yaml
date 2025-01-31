@@ -16,6 +16,8 @@ models:
   ProductModel:
     name: string
     class: string
+    indexes:
+      - unique: name
 
   Report:
     engineer_name: string

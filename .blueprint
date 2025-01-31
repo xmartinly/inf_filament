@@ -4,11 +4,11 @@ created:
     - database/factories/ProductModelFactory.php
     - database/factories/ReportFactory.php
     - database/factories/AttachmentFactory.php
-    - database/migrations/2025_01_30_132722_create_products_table.php
-    - database/migrations/2025_01_30_132723_create_customers_table.php
-    - database/migrations/2025_01_30_132724_create_product_models_table.php
-    - database/migrations/2025_01_30_132725_create_reports_table.php
-    - database/migrations/2025_01_30_132726_create_attachments_table.php
+    - database/migrations/2025_01_31_075457_create_products_table.php
+    - database/migrations/2025_01_31_075458_create_customers_table.php
+    - database/migrations/2025_01_31_075459_create_product_models_table.php
+    - database/migrations/2025_01_31_075500_create_reports_table.php
+    - database/migrations/2025_01_31_075501_create_attachments_table.php
     - app/Models/Product.php
     - app/Models/Customer.php
     - app/Models/ProductModel.php
@@ -21,6 +21,6 @@ models:
     User: { name: string, region: 'string nullable', email: string, email_verified_at: 'timestamp nullable', password: string, remember_token: 'string:100 nullable' }
     Product: { pn: string, description: text, price: 'decimal:8,2 nullable', class: string, year: unsignedInteger }
     Customer: { sap_no: unsignedInteger, name_chs: string, name_eng: string, locate: string, group: unsignedInteger }
-    ProductModel: { name: string, class: string }
+    ProductModel: { name: string, class: string, indexes: [{ unique: name }] }
     Report: { engineer_name: string, job_region: string, cst_sap_no: unsignedInteger, cst_name_chs: string, cst_name_eng: string, product_model: string, product_class: string, product_errcode: 'string:500', product_catsn: 'string:500', job_content: 'text nullable', job_notes: 'string:500 nullable', in_date: date, done_date: date, service_type: string, spare_usage: json, relationships: { hasMany: Attachment } }
     Attachment: { report_id: unsignedBigInteger, file_name: string, file_path: string, comment: string, relationships: { belongsTo: Report } }
