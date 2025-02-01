@@ -1,7 +1,14 @@
 <?php
+/*
+ * @Author: xmartinly 778567144@qq.com
+ * @Date: 2025-02-01 13:13:53
+ * @LastEditors: xmartinly 778567144@qq.com
+ * @LastEditTime: 2025-02-01 13:27:05
+ * @FilePath: \inf_filament\app\Filament\Resources\ReportResource.php
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 
 namespace App\Filament\Resources;
-
 
 use App\Filament\Resources\ReportResource\Pages;
 use App\Filament\Resources\ReportResource\RelationManagers;
@@ -11,12 +18,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-
-use Illuminate\Support\Facades\Auth;
-use App\Enums\ProductClass;
-use App\Enums\ServiceType;
-use App\Models\ProductModel;
-use Filament\Forms\Get;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ReportResource extends Resource
 {
@@ -26,14 +29,12 @@ class ReportResource extends Resource
 
     public static function form(Form $form): Form
     {
-       
         return $form
             ->schema(Report::getForm());
     }
 
     public static function table(Table $table): Table
     {
-
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('engineer_name')

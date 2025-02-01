@@ -4,11 +4,9 @@ namespace App\Models;
 
 use App\Enums\ProductClass;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
 
 class ProductModel extends Model
 {
@@ -24,11 +22,6 @@ class ProductModel extends Model
         'class' => ProductClass::class,
     ];
 
-    /**
-     * getForm function
-     *
-     * @return array
-     */
     public static function getForm(): array
     {
         return [
@@ -38,6 +31,11 @@ class ProductModel extends Model
             Select::make('class')
                 ->required()
                 ->options(ProductClass::class),
-        ];;
+        ];
+    }
+
+    public function report()
+    {
+        return $this->belongsTo(Report::class);
     }
 }

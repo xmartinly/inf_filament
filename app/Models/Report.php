@@ -1,17 +1,23 @@
 <?php
+/*
+ * @Author: xmartinly 778567144@qq.com
+ * @Date: 2025-02-01 13:10:49
+ * @LastEditors: xmartinly 778567144@qq.com
+ * @LastEditTime: 2025-02-01 13:43:03
+ * @FilePath: \inf_filament\app\Models\Report.php
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 
 namespace App\Models;
 
-use Filament\Forms\Get;
-use App\Enums\ServiceType;
-use App\Enums\ProductClass;
-use Blueprint\Builder;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\MarkdownEditor;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -29,7 +35,11 @@ class Report extends Model
         'cst_sap_no' => 'integer',
         'in_date' => 'date',
         'done_date' => 'date',
+        'is_done' => 'boolean',
         'spare_usage' => 'array',
+        'customer_id' => 'integer',
+        'product_id' => 'integer',
+        'product_model_id' => 'integer',
     ];
 
     public function attachments(): HasMany
@@ -37,66 +47,83 @@ class Report extends Model
         return $this->hasMany(Attachment::class);
     }
 
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function customer(): HasOne
+    {
+        return $this->hasOne(Customer::class);
+    }
+
+    public function productModel(): HasOne
+    {
+        return $this->hasOne(ProductModel::class);
+    }
+
     public static function getForm(): array
     {
-        $product_models = ProductModel::all();
+        $user = Auth()->user();
+        $product_model = ProductModel::all();
         return [
             TextInput::make('engineer_name')
-                ->label('Engineer')
-                ->disabled()
-                ->default(Auth::user()->name),
+                ->hidden(true)
+                ->default($user->name),
             TextInput::make('job_region')
-                ->label('Region')
-                ->disabled()
-                ->default(Auth::user()->region),
-            TextInput::make('cst_sap_no')
-                ->label('SAP')
-                ->required()
-                ->numeric(),
-            TextInput::make('cst_name_chs')
-                ->label('NameCHS')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('cst_name_eng')
-                ->label('NameENG')
-                ->required()
-                ->maxLength(255),
-            Select::make('product_model')
-                ->label('Model')
-                ->options($product_models->pluck('name'))
-                ->searchable()
-                ->required(),
-            TextInput::make('product_class')
-                ->live()
-                ->readOnly(true)
-                // ->before()
-                ->default(function (Get $get): string {
-                    // return Auth::user()->region;
-                    return $get('engineer_name');
-                }),
+                ->hidden(true)
+                ->default($user->region),
+
+            //Customer Infor section
+            Section::make('Customer Information')
+                ->schema([
+                    TextInput::make('cst_sap_no')
+                        ->required()
+                        ->numeric(),
+                    TextInput::make('cst_name_chs')
+                        ->required()
+                        ->maxLength(255),
+                    TextInput::make('cst_name_eng')
+                        ->required()
+                        ->maxLength(255),
+                ])
+                ->columns(3),
+
+            //Product Infor section
+            Section::make('Product Information')
+                ->schema([
+                    Select::make('product_model')
+                        ->required()
+                        ->searchable()
+                        ->preload()
+                        ->relationship('productModel', 'name')
+                        ->editOptionForm(ProductModel::getForm())
+                        ->createOptionForm(ProductModel::getForm()),
+                    TextInput::make('product_class')
+                        ->required()
+                        ->maxLength(255),
+                    TextInput::make('product_catsn')
+                        ->required()
+                        ->maxLength(500),
+                ])
+                ->collapsible()
+                ->columns(3),
 
             TextInput::make('product_errcode')
-                ->label('Error')
                 ->required()
                 ->maxLength(500),
-            TextInput::make('product_catsn')
-                ->label('SN')
-                ->required()
-                ->maxLength(500),
+
             MarkdownEditor::make('job_content')
-                ->label('Work')
                 ->columnSpanFull(),
             TextInput::make('job_notes')
-                ->label('Notes')
                 ->maxLength(500),
             DatePicker::make('in_date')
                 ->required(),
             DatePicker::make('done_date')
                 ->required(),
-            Select::make('service_type')
-                ->enum(ProductClass::class)
-                ->options(ServiceType::class)
-                ->required(),
+            TextInput::make('service_type')
+                ->required()
+                ->maxLength(255),
             TextInput::make('spare_usage')
                 ->required(),
         ];

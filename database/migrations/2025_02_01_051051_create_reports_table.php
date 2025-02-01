@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('job_region');
             $table->unsignedInteger('cst_sap_no');
             $table->string('cst_name_chs');
-            $table->string('cst_name_eng');
+            $table->string('cst_name_eng')->nullable();
             $table->string('product_model');
             $table->string('product_class');
             $table->string('product_errcode', 500);
@@ -25,9 +25,13 @@ return new class extends Migration
             $table->text('job_content')->nullable();
             $table->string('job_notes', 500)->nullable();
             $table->date('in_date');
-            $table->date('done_date');
+            $table->date('done_date')->nullable();
+            $table->boolean('is_done');
             $table->string('service_type');
             $table->json('spare_usage');
+            $table->unsignedBigInteger('customer_id')->nullable();
+            $table->unsignedBigInteger('product_id')->nullable();
+            $table->unsignedBigInteger('product_model_id')->nullable();
             $table->timestamps();
         });
     }

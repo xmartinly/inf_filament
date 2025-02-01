@@ -5,6 +5,8 @@ models:
     price: decimal:8,2 nullable
     class: string
     year: unsignedInteger
+    indexes:
+      - unique: pn, description
 
   Customer:
     sap_no: unsignedInteger
@@ -12,6 +14,8 @@ models:
     name_eng: string
     locate: string
     group: unsignedInteger
+    indexes:
+      - unique: name_chs, name_eng
 
   ProductModel:
     name: string
@@ -20,11 +24,11 @@ models:
       - unique: name
 
   Report:
-    engineer_name: string
+    engineer_name: string 
     job_region: string
     cst_sap_no: unsignedInteger
-    cst_name_chs: string
-    cst_name_eng: string
+    cst_name_chs: string 
+    cst_name_eng: string nullable
     product_model: string
     product_class: string
     product_errcode: string:500
@@ -32,12 +36,17 @@ models:
     job_content: text nullable
     job_notes: string:500 nullable
     in_date: date
-    done_date: date
+    done_date: date nullable
+    is_done: boolean
     service_type: string
     spare_usage: json
+    customer_id: unsignedBigInteger nullable
+    product_id: unsignedBigInteger nullable
+    product_model_id: unsignedBigInteger nullable
     relationships:
-      hasMany: Attachment
-  
+      hasMany: Attachment, Product
+      hasOne: Customer, ProductModel
+      
   Attachment:
     report_id: unsignedBigInteger
     file_name: string
@@ -45,5 +54,3 @@ models:
     comment: string
     relationships:
       belongsTo: Report
-
-seeders: Product, Customer, Report

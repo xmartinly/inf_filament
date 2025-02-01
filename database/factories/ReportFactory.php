@@ -34,8 +34,12 @@ class ReportFactory extends Factory
             'job_notes' => fake()->regexify('[A-Za-z0-9]{500}'),
             'in_date' => fake()->date(),
             'done_date' => fake()->date(),
+            'is_done' => fake()->boolean(),
             'service_type' => fake()->word(),
             'spare_usage' => '{}',
+            'customer_id' => fake()->randomNumber(),
+            'product_id' => fake()->randomNumber(),
+            'product_model_id' => fake()->randomNumber(),
         ];
     }
 }
