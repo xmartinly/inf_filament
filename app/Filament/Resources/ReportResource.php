@@ -3,7 +3,7 @@
  * @Author: xmartinly 778567144@qq.com
  * @Date: 2025-02-01 13:13:53
  * @LastEditors: xmartinly 778567144@qq.com
- * @LastEditTime: 2025-02-01 18:05:08
+ * @LastEditTime: 2025-02-01 19:20:18
  * @FilePath: \inf_filament\app\Filament\Resources\ReportResource.php
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -25,7 +25,9 @@ class ReportResource extends Resource
 {
     protected static ?string $model = Report::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?int $navigationSort = 1;
+
+    protected static ?string $navigationIcon = 'carbon-document-multiple-01';
 
     public static function form(Form $form): Form
     {

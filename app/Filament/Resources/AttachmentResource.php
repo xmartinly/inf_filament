@@ -3,7 +3,7 @@
  * @Author: xmartinly 778567144@qq.com
  * @Date: 2025-02-01 17:52:36
  * @LastEditors: xmartinly 778567144@qq.com
- * @LastEditTime: 2025-02-01 18:39:09
+ * @LastEditTime: 2025-02-01 19:20:04
  * @FilePath: \inf_filament\app\Filament\Resources\AttachmentResource.php
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -25,9 +25,9 @@ class AttachmentResource extends Resource
 {
     protected static ?string $model = Attachment::class;
 
-    // protected static ?string $navigationGroup = 'Info';
+    protected static ?int $navigationSort = 4;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'carbon-software-resource-cluster';
 
     public static function form(Form $form): Form
     {
