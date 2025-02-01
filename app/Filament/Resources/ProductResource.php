@@ -1,4 +1,12 @@
 <?php
+/*
+ * @Author: xmartinly 778567144@qq.com
+ * @Date: 2025-02-01 13:13:49
+ * @LastEditors: xmartinly 778567144@qq.com
+ * @LastEditTime: 2025-02-01 15:02:23
+ * @FilePath: \inf_filament\app\Filament\Resources\ProductResource.php
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 
 namespace App\Filament\Resources;
 
@@ -22,23 +30,7 @@ class ProductResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('pn')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('price')
-                    ->numeric()
-                    ->prefix('$'),
-                Forms\Components\TextInput::make('class')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('year')
-                    ->required()
-                    ->numeric(),
-            ]);
+            ->schema(Product::getForm());
     }
 
     public static function table(Table $table): Table

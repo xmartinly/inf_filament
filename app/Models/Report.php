@@ -3,17 +3,17 @@
  * @Author: xmartinly 778567144@qq.com
  * @Date: 2025-02-01 13:10:49
  * @LastEditors: xmartinly 778567144@qq.com
- * @LastEditTime: 2025-02-01 14:45:54
+ * @LastEditTime: 2025-02-01 15:14:44
  * @FilePath: \inf_filament\app\Models\Report.php
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 
 namespace App\Models;
 
+use Filament\Forms\Get;
 use Filament\Forms\Set;
-use App\Enums\ServiceType;
 
-use App\Enums\ProductClass;
+use App\Enums\ServiceType;
 use Filament\Forms\Components\Select;
 use Filament\Support\Enums\Alignment;
 use Filament\Forms\Components\Builder;
@@ -22,9 +22,11 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\MarkdownEditor;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class Report extends Model
 {
@@ -43,7 +45,6 @@ class Report extends Model
         'is_done' => 'boolean',
         'spare_usage' => 'array',
         'service_type' => ServiceType::class,
-        // 'product_class' => ProductClass::class,
         'customer_id' => 'integer',
         'product_id' => 'integer',
         'product_model_id' => 'integer',
@@ -127,6 +128,7 @@ class Report extends Model
                 ->collapsible()
                 ->columns(9),
 
+            //Issue & Work section
             Section::make('Issue & Work')
                 ->schema([
                     TextInput::make('product_errcode')
@@ -142,9 +144,22 @@ class Report extends Model
                         ->blocks([
                             Builder\Block::make('Spare')
                                 ->schema([
-                                    TextInput::make('pn'),
+                                    Select::make('pn')
+                                        ->searchable()
+                                        ->editOptionForm(Product::getForm())
+                                        ->createOptionForm(Product::getForm())
+                                        ->relationship(
+                                            'products',
+                                            'description',
+                                            modifyQueryUsing: function (EloquentBuilder $query, Get $get) {
+                                                return $query->where('pn', 'ilike', '%' . $get('pn') . '%')
+                                                    ->orWhere('description', 'ilike', '%' . $get('pn') . '%');
+                                            }
+                                        ),
                                     TextInput::make('descp'),
-                                    TextInput::make('qty'),
+                                    TextInput::make('qty')
+                                        ->numeric()
+                                        ->default(1),
                                 ])
                                 ->columns(3),
                         ])
@@ -164,7 +179,7 @@ class Report extends Model
                 ->columns(3),
 
 
-
+            //Misc Info section
             Section::make('Misc')
                 ->collapsible()
                 ->columns(2)
