@@ -3,15 +3,20 @@
  * @Author: xmartinly 778567144@qq.com
  * @Date: 2025-02-01 13:10:49
  * @LastEditors: xmartinly 778567144@qq.com
- * @LastEditTime: 2025-02-01 13:43:03
+ * @LastEditTime: 2025-02-01 14:45:54
  * @FilePath: \inf_filament\app\Models\Report.php
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Set;
+use App\Enums\ServiceType;
+
+use App\Enums\ProductClass;
 use Filament\Forms\Components\Select;
+use Filament\Support\Enums\Alignment;
+use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Section;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
@@ -37,6 +42,8 @@ class Report extends Model
         'done_date' => 'date',
         'is_done' => 'boolean',
         'spare_usage' => 'array',
+        'service_type' => ServiceType::class,
+        // 'product_class' => ProductClass::class,
         'customer_id' => 'integer',
         'product_id' => 'integer',
         'product_model_id' => 'integer',
@@ -65,7 +72,7 @@ class Report extends Model
     public static function getForm(): array
     {
         $user = Auth()->user();
-        $product_model = ProductModel::all();
+
         return [
             TextInput::make('engineer_name')
                 ->hidden(true)
@@ -75,7 +82,7 @@ class Report extends Model
                 ->default($user->region),
 
             //Customer Infor section
-            Section::make('Customer Information')
+            Section::make('Customer')
                 ->schema([
                     TextInput::make('cst_sap_no')
                         ->required()
@@ -87,45 +94,86 @@ class Report extends Model
                         ->required()
                         ->maxLength(255),
                 ])
+                ->collapsible()
                 ->columns(3),
 
             //Product Infor section
-            Section::make('Product Information')
+            Section::make('Product')
                 ->schema([
+                    TextInput::make('product_catsn')
+                        ->label('C/SN')
+                        ->required()
+                        ->columnSpan(6)
+                        ->maxLength(500),
                     Select::make('product_model')
+                        ->label('Model')
+                        ->columnSpan(2)
                         ->required()
                         ->searchable()
                         ->preload()
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, Set $set) {
+                            $model = ProductModel::find($state);
+                            $set('product_class', $model->class);
+                        })
                         ->relationship('productModel', 'name')
                         ->editOptionForm(ProductModel::getForm())
                         ->createOptionForm(ProductModel::getForm()),
                     TextInput::make('product_class')
+                        ->label('Class')
+                        ->columnSpan(1)
+                        ->readOnly(),
+                ])
+                ->collapsible()
+                ->columns(9),
+
+            Section::make('Issue & Work')
+                ->schema([
+                    TextInput::make('product_errcode')
+                        ->label('Issue')
                         ->required()
-                        ->maxLength(255),
-                    TextInput::make('product_catsn')
-                        ->required()
+                        ->columnSpanFull()
                         ->maxLength(500),
+                    MarkdownEditor::make('job_content')
+                        ->label('Work')
+                        ->columnSpanFull(),
+                    Builder::make('spare_usage')
+                        ->label(__('Spare'))
+                        ->blocks([
+                            Builder\Block::make('Spare')
+                                ->schema([
+                                    TextInput::make('pn'),
+                                    TextInput::make('descp'),
+                                    TextInput::make('qty'),
+                                ])
+                                ->columns(3),
+                        ])
+                        ->addActionAlignment(Alignment::Start)
+                        ->columnSpanFull(),
+                    TextInput::make('job_notes')
+                        ->label('Notes')
+                        ->columnSpan(2)
+                        ->maxLength(500),
+                    Select::make('service_type')
+                        ->label('Service Type')
+                        ->options(ServiceType::class)
+                        ->columnSpan(1)
+                        ->required(),
                 ])
                 ->collapsible()
                 ->columns(3),
 
-            TextInput::make('product_errcode')
-                ->required()
-                ->maxLength(500),
 
-            MarkdownEditor::make('job_content')
-                ->columnSpanFull(),
-            TextInput::make('job_notes')
-                ->maxLength(500),
-            DatePicker::make('in_date')
-                ->required(),
-            DatePicker::make('done_date')
-                ->required(),
-            TextInput::make('service_type')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('spare_usage')
-                ->required(),
+
+            Section::make('Misc')
+                ->collapsible()
+                ->columns(2)
+                ->schema([
+                    DatePicker::make('in_date')
+                        ->required(),
+                    DatePicker::make('done_date')
+                        ->required(),
+                ]),
         ];
     }
 }

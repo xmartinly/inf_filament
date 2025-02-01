@@ -1,4 +1,12 @@
 <?php
+/*
+ * @Author: xmartinly 778567144@qq.com
+ * @Date: 2025-02-01 11:15:26
+ * @LastEditors: xmartinly 778567144@qq.com
+ * @LastEditTime: 2025-02-01 14:16:26
+ * @FilePath: \inf_filament\app\Providers\Filament\SvcPanelProvider.php
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 
 namespace App\Providers\Filament;
 
@@ -30,8 +38,9 @@ class SvcPanelProvider extends PanelProvider
             ->path('svc')
             ->login()
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Sky,
                 'gray' => Color::Gray,
+
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
