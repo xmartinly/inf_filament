@@ -50,26 +50,51 @@ class Report extends Model
         'product_model_id' => 'integer',
     ];
 
+    /**
+     * attachments relationship
+     *
+     * @return HasMany
+     */
     public function attachments(): HasMany
     {
         return $this->hasMany(Attachment::class);
     }
 
+    /**
+     * products relationship
+     *
+     * @return HasMany
+     */
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }
 
+    /**
+     * customer relationship
+     *
+     * @return HasOne
+     */
     public function customer(): HasOne
     {
         return $this->hasOne(Customer::class);
     }
 
+    /**
+     * productModel relationship
+     *
+     * @return HasOne
+     */
     public function productModel(): HasOne
     {
         return $this->hasOne(ProductModel::class);
     }
 
+    /**
+     * getForm function
+     *
+     * @return array
+     */
     public static function getForm(): array
     {
         $user = Auth()->user();
