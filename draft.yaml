@@ -37,7 +37,7 @@ models:
     job_notes: string:500 nullable
     in_date: date
     done_date: date nullable
-    is_done: boolean
+    is_done: boolean default:false
     service_type: string
     spare_usage: json
     customer_id: unsignedBigInteger nullable

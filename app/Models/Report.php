@@ -3,7 +3,7 @@
  * @Author: xmartinly 778567144@qq.com
  * @Date: 2025-02-01 13:10:49
  * @LastEditors: xmartinly 778567144@qq.com
- * @LastEditTime: 2025-02-01 15:14:44
+ * @LastEditTime: 2025-02-02 19:35:51
  * @FilePath: \inf_filament\app\Models\Report.php
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -18,14 +18,15 @@ use Filament\Forms\Components\Select;
 use Filament\Support\Enums\Alignment;
 use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Checkbox;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\MarkdownEditor;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 
 
 class Report extends Model
@@ -101,10 +102,10 @@ class Report extends Model
 
         return [
             TextInput::make('engineer_name')
-                ->hidden(true)
+                // ->hidden(true)
                 ->default($user->name),
             TextInput::make('job_region')
-                ->hidden(true)
+                // ->hidden(true)
                 ->default($user->region),
 
             //Customer Infor section
@@ -211,8 +212,8 @@ class Report extends Model
                 ->schema([
                     DatePicker::make('in_date')
                         ->required(),
-                    DatePicker::make('done_date')
-                        ->required(),
+                    Checkbox::make('is_done'),
+
                 ]),
         ];
     }
