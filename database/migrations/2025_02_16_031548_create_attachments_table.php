@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('attachments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('sap_no');
-            $table->string('name_chs');
-            $table->string('name_eng');
-            $table->string('locate');
-            $table->unsignedInteger('group');
-            $table->unique(['name_chs', 'name_eng']);
+            $table->foreignId('contract_id');
+            $table->string('file_path');
+            $table->string('file_name');
+            $table->string('mime_type');
+            $table->unsignedInteger('size');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('attachments');
     }
 };

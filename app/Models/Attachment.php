@@ -17,11 +17,11 @@ class Attachment extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'report_id' => 'integer',
+        'contract_id' => 'integer',
     ];
 
-    public function report(): BelongsTo
+    public function contract(): BelongsTo
     {
-        return $this->belongsTo(Report::class);
+        return $this->belongsTo(Contract::class);
     }
 }

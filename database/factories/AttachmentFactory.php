@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\Attachment;
-use App\Models\Report;
+use App\Models\Contract;
 
 class AttachmentFactory extends Factory
 {
@@ -22,10 +22,11 @@ class AttachmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'report_id' => Report::factory(),
-            'file_name' => fake()->word(),
+            'contract_id' => Contract::factory(),
             'file_path' => fake()->word(),
-            'comment' => fake()->word(),
+            'file_name' => fake()->word(),
+            'mime_type' => fake()->word(),
+            'size' => fake()->numberBetween(-10000, 10000),
         ];
     }
 }

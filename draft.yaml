@@ -1,56 +1,104 @@
 models:
   Product:
     pn: string
-    description: text
-    price: decimal:8,2 nullable
-    class: string
-    year: unsignedInteger
-    indexes:
-      - unique: pn, description
+    price: decimal:10,2
+    year: unsignedInteger default:0
+    class: string default:'n/a'
+    description: text:nullable
+    relationships:
+      belongsToMany: Contract through:ContractProduct
 
   Customer:
     sap_no: unsignedInteger
     name_chs: string
     name_eng: string
-    locate: string
-    group: unsignedInteger
+    file_no: string default:'0'
+    locate: string default:'n/a'
+    group: unsignedInteger default:0
+    relationships:
+      hasMany: Contract, Contact
     indexes:
-      - unique: name_chs, name_eng
+      - unique: sap_no
 
-  ProductModel:
+  Contact:
+    customer_id: foreignId:customers
     name: string
-    class: string
+    email: string:nullable
+    phone: string:nullable
+    address: text:nullable
+    relationships:
+      belongsTo: Customer
+      hasMany: Contract
+  
+  Contract:
+    contract_no: string
+    contract_region: string default:'CD'
+    contract_date: date
+    contract_class: string default:'VC'
+    contract_sales: string default:'ML'
+    customer_id: foreignId:customers
+    contact_id: foreignId:contacts:nullable
+    contract_amount: decimal:8,2 default:0.00
+    contract_tax_rate: decimal:8,2 default:13.00
+    contract_amount_wtax: decimal:8,2 default:0.00
+    terms_origin: text
+    terms_delivery: text
+    terms_place_delivery: text
+    delivery_estimated: integer default:0
+    terms_payment: text
+    relationships:
+      belongsTo: Customer, Contact
+      hasMany: Attachment
+      belongsToMany: Product through:ContractProduct
     indexes:
-      - unique: name
+      - unique: contract_no
+  
+  ContractProduct:
+    contract_id: foreignId:contracts
+    product_id: foreignId:products
+    quantity: integer:default(1)
+    discount_rate: decimal:8,2
+    amount: decimal:8,2
 
-  Report:
-    engineer_name: string 
-    job_region: string
-    cst_sap_no: unsignedInteger
-    cst_name_chs: string 
-    cst_name_eng: string nullable
-    product_model: string
-    product_class: string
-    product_errcode: string:500
-    product_catsn: string:500
-    job_content: text nullable
-    job_notes: string:500 nullable
-    in_date: date
-    done_date: date nullable
-    is_done: boolean default:false
-    service_type: string
-    spare_usage: json
-    customer_id: unsignedBigInteger nullable
-    product_id: unsignedBigInteger nullable
-    product_model_id: unsignedBigInteger nullable
-    relationships:
-      hasMany: Attachment, Product
-      hasOne: Customer, ProductModel
-      
   Attachment:
-    report_id: unsignedBigInteger
-    file_name: string
-    file_path: string
-    comment: string
-    relationships:
-      belongsTo: Report
+      contract_id: foreignId:contracts
+      file_path: string
+      file_name: string
+      mime_type: string
+      size: integer:unsigned
+      relationships:
+        belongsTo: Contract
+
+relationships:
+- Contract belongsToMany Product through:ContractProduct
+
+  # ProductModel:
+  #   name: string
+  #   class: string
+  #   indexes:
+  #     - unique: name
+
+  # Report:
+  #   engineer_name: string 
+  #   job_region: string
+  #   cst_sap_no: unsignedInteger
+  #   cst_name_chs: string 
+  #   cst_name_eng: string nullable
+  #   product_model: string
+  #   product_class: string
+  #   product_errcode: string:500
+  #   product_catsn: string:500
+  #   job_content: text nullable
+  #   job_notes: string:500 nullable
+  #   in_date: date
+  #   done_date: date nullable
+  #   is_done: boolean default:false
+  #   service_type: string
+  #   spare_usage: json
+  #   customer_id: unsignedBigInteger nullable
+  #   product_id: unsignedBigInteger nullable
+  #   product_model_id: unsignedBigInteger nullable
+  #   relationships:
+  #     hasMany: Attachment, Product
+  #     hasOne: Customer, ProductModel
+

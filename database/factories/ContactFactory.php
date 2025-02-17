@@ -4,16 +4,17 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\ProductModel;
+use App\Models\Contact;
+use App\Models\Customer;
 
-class ProductModelFactory extends Factory
+class ContactFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = ProductModel::class;
+    protected $model = Contact::class;
 
     /**
      * Define the model's default state.
@@ -21,8 +22,11 @@ class ProductModelFactory extends Factory
     public function definition(): array
     {
         return [
+            'customer_id' => Customer::factory(),
             'name' => fake()->name(),
-            'class' => fake()->word(),
+            'email' => fake()->safeEmail(),
+            'phone' => fake()->phoneNumber(),
+            'address' => fake()->text(),
         ];
     }
 }

@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Customer extends Model
+class Contact extends Model
 {
     use HasFactory;
 
@@ -17,17 +18,16 @@ class Customer extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'sap_no' => 'integer',
-        'group' => 'integer',
+        'customer_id' => 'integer',
     ];
+
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
 
     public function contracts(): HasMany
     {
         return $this->hasMany(Contract::class);
-    }
-
-    public function contacts(): HasMany
-    {
-        return $this->hasMany(Contact::class);
     }
 }

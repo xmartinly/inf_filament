@@ -27,7 +27,7 @@ class ProductResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationLabel = 'Product';
+    protected static ?string $navigationLabel = '产品';
 
     protected static ?string $navigationIcon = 'carbon-ibm-granite';
 
@@ -53,14 +53,6 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('year')
                     ->numeric()
                     ->sortable(),
-                // Tables\Columns\TextColumn::make('created_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
-                // Tables\Columns\TextColumn::make('updated_at')
-                //     ->dateTime()
-                //     ->sortable()
-                //     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

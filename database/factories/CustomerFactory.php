@@ -24,6 +24,7 @@ class CustomerFactory extends Factory
             'sap_no' => fake()->randomNumber(),
             'name_chs' => fake()->word(),
             'name_eng' => fake()->word(),
+            'file_no' => fake()->word(),
             'locate' => fake()->word(),
             'group' => fake()->randomNumber(),
         ];

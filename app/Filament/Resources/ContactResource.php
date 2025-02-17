@@ -1,18 +1,10 @@
 <?php
-/*
- * @Author: xmartinly 778567144@qq.com
- * @Date: 2025-02-01 17:52:36
- * @LastEditors: xmartinly 778567144@qq.com
- * @LastEditTime: 2025-02-01 19:20:04
- * @FilePath: \inf_filament\app\Filament\Resources\AttachmentResource.php
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AttachmentResource\Pages;
-use App\Filament\Resources\AttachmentResource\RelationManagers;
-use App\Models\Attachment;
+use App\Filament\Resources\ContactResource\Pages;
+use App\Filament\Resources\ContactResource\RelationManagers;
+use App\Models\Contact;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -21,32 +13,32 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class AttachmentResource extends Resource
+class ContactResource extends Resource
 {
-    protected static ?string $model = Attachment::class;
+    protected static ?string $model = Contact::class;
 
-    protected static ?int $navigationSort = 4;
-
-    protected static ?string $navigationLabel = '附件';
-
-    protected static ?string $navigationIcon = 'carbon-software-resource-cluster';
+    protected static ?string $navigationLabel = '联系人';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('report_id')
-                    ->relationship('report', 'id')
+                Forms\Components\Select::make('customer_id')
+                    ->searchable()
+                    ->relationship('customer', 'name_chs')
                     ->required(),
-                Forms\Components\TextInput::make('file_name')
+                Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('file_path')
-                    ->required()
+                Forms\Components\TextInput::make('email')
+                    ->email()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('comment')
-                    ->required()
+                Forms\Components\TextInput::make('phone')
+                    ->tel()
                     ->maxLength(255),
+                Forms\Components\Textarea::make('address')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -54,14 +46,14 @@ class AttachmentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('report.id')
+                Tables\Columns\TextColumn::make('customer.id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('file_name')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('file_path')
+                Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('comment')
+                Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -95,9 +87,9 @@ class AttachmentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAttachments::route('/'),
-            'create' => Pages\CreateAttachment::route('/create'),
-            'edit' => Pages\EditAttachment::route('/{record}/edit'),
+            'index' => Pages\ListContacts::route('/'),
+            'create' => Pages\CreateContact::route('/create'),
+            'edit' => Pages\EditContact::route('/{record}/edit'),
         ];
     }
 }
