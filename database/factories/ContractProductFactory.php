@@ -24,8 +24,8 @@ class ContractProductFactory extends Factory
             'contract_id' => fake()->word(),
             'product_id' => fake()->word(),
             'quantity' => fake()->numberBetween(-10000, 10000),
-            'discount_rate' => fake()->randomFloat(2, 0, 999999.99),
-            'amount' => fake()->randomFloat(2, 0, 999999.99),
+            'discount_rate' => fake()->randomFloat(4, 0, 999999999999.9999),
+            'amount' => fake()->randomFloat(4, 0, 999999999999.9999),
         ];
     }
 }

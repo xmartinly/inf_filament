@@ -17,12 +17,12 @@ class Product extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'price' => 'decimal:2',
+        'price' => 'decimal:4',
         'year' => 'integer',
     ];
 
     public function contractThroughs(): BelongsToMany
     {
-        return $this->belongsToMany(ContractProduct::class);
+        return $this->belongsToMany(ContractThrough::class, 'ContractProduct');
     }
 }

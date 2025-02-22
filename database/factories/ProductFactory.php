@@ -22,7 +22,7 @@ class ProductFactory extends Factory
     {
         return [
             'pn' => fake()->word(),
-            'price' => fake()->randomFloat(2, 0, 99999999.99),
+            'price' => fake()->randomFloat(4, 0, 999999999999.9999),
             'year' => fake()->randomNumber(),
             'class' => fake()->word(),
             'description' => fake()->text(),

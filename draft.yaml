@@ -1,7 +1,7 @@
 models:
   Product:
     pn: string
-    price: decimal:10,2
+    price: decimal:16,4
     year: unsignedInteger default:0
     class: string default:'n/a'
     description: text:nullable
@@ -9,7 +9,7 @@ models:
       belongsToMany: Contract through:ContractProduct
 
   Customer:
-    sap_no: unsignedInteger
+    sap_no: unsignedInteger default:0
     name_chs: string
     name_eng: string
     file_no: string default:'0'
@@ -17,8 +17,6 @@ models:
     group: unsignedInteger default:0
     relationships:
       hasMany: Contract, Contact
-    indexes:
-      - unique: sap_no
 
   Contact:
     customer_id: foreignId:customers
@@ -38,9 +36,9 @@ models:
     contract_sales: string default:'ML'
     customer_id: foreignId:customers
     contact_id: foreignId:contacts:nullable
-    contract_amount: decimal:8,2 default:0.00
-    contract_tax_rate: decimal:8,2 default:13.00
-    contract_amount_wtax: decimal:8,2 default:0.00
+    contract_amount: decimal:16,4 default:0.00
+    contract_tax_rate: decimal:16,4 default:13.00
+    contract_amount_wtax: decimal:16,4 default:0.00
     terms_origin: text
     terms_delivery: text
     terms_place_delivery: text
@@ -57,8 +55,8 @@ models:
     contract_id: foreignId:contracts
     product_id: foreignId:products
     quantity: integer:default(1)
-    discount_rate: decimal:8,2
-    amount: decimal:8,2
+    discount_rate: decimal:16,4
+    amount: decimal:16,4
 
   Attachment:
       contract_id: foreignId:contracts

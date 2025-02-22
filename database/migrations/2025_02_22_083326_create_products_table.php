@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('pn');
-            $table->decimal('price', 10, 2);
+            $table->decimal('price', 16, 4);
             $table->unsignedInteger('year')->default(0);
             $table->string('class')->default('n/a');
             $table->text('description')->nullable();

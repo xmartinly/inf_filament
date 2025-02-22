@@ -16,7 +16,7 @@ class ContractProduct extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'discount_rate' => 'decimal:2',
-        'amount' => 'decimal:2',
+        'discount_rate' => 'decimal:4',
+        'amount' => 'decimal:4',
     ];
 }

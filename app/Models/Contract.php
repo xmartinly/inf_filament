@@ -8,15 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
-
-use Illuminate\Database\Eloquent\Builder;
-
 class Contract extends Model
 {
     use HasFactory;
@@ -31,9 +22,9 @@ class Contract extends Model
         'contract_date' => 'date',
         'customer_id' => 'integer',
         'contact_id' => 'integer',
-        'contract_amount' => 'decimal:2',
-        'contract_tax_rate' => 'decimal:2',
-        'contract_amount_wtax' => 'decimal:2',
+        'contract_amount' => 'decimal:4',
+        'contract_tax_rate' => 'decimal:4',
+        'contract_amount_wtax' => 'decimal:4',
     ];
 
     public function customer(): BelongsTo
@@ -53,71 +44,6 @@ class Contract extends Model
 
     public function productThroughs(): BelongsToMany
     {
-        return $this->belongsToMany(ContractProduct::class);
-    }
-
-    static function getForm(): array
-    {
-
-        return [
-            TextInput::make('contract_no')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('contract_region')
-                ->required()
-                ->maxLength(255)
-                ->default('CD'),
-            DatePicker::make('contract_date')
-                ->required(),
-            TextInput::make('contract_class')
-                ->required()
-                ->maxLength(255)
-                ->default('VC'),
-            TextInput::make('contract_sales')
-                ->required()
-                ->maxLength(255)
-                ->default('ML'),
-            Select::make('customer_id')
-                ->searchable()
-                ->live()
-                ->relationship('customer', 'name_chs')
-                // ->getOptionLabelFromRecordUsing(fn(Customer $record): string => "{$record->name_chs} - {$record->name_eng}")
-                ->required(),
-            Select::make('contact_id')
-                ->searchable()
-                ->preload()
-                ->relationship('contact', 'name', modifyQueryUsing: function (Builder $query, Get $get) {
-                    return $query->where('customer_id', $get('customer_id'));
-                })
-                ->required(),
-            TextInput::make('contract_amount')
-                ->required()
-                ->numeric()
-                ->default(0),
-            TextInput::make('contract_tax_rate')
-                ->required()
-                ->numeric()
-                ->default(13),
-            TextInput::make('contract_amount_wtax')
-                ->required()
-                ->numeric()
-                ->default(0),
-            Textarea::make('terms_origin')
-                ->required()
-                ->columnSpanFull(),
-            Textarea::make('terms_delivery')
-                ->required()
-                ->columnSpanFull(),
-            Textarea::make('terms_place_delivery')
-                ->required()
-                ->columnSpanFull(),
-            TextInput::make('delivery_estimated')
-                ->required()
-                ->numeric()
-                ->default(0),
-            Textarea::make('terms_payment')
-                ->required()
-                ->columnSpanFull(),
-        ];
+        return $this->belongsToMany(ProductThrough::class, 'ContractProduct');
     }
 }

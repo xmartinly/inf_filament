@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('contract_id');
             $table->string('product_id');
             $table->integer('quantity')->default(1);
-            $table->decimal('discount_rate', 8, 2);
-            $table->decimal('amount', 8, 2);
+            $table->decimal('discount_rate', 16, 4);
+            $table->decimal('amount', 16, 4);
             $table->timestamps();
         });
     }

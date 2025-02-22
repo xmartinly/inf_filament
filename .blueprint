@@ -5,13 +5,13 @@ created:
     - database/factories/ContractFactory.php
     - database/factories/ContractProductFactory.php
     - database/factories/AttachmentFactory.php
-    - database/migrations/2025_02_16_031543_create_products_table.php
-    - database/migrations/2025_02_16_031544_create_customers_table.php
-    - database/migrations/2025_02_16_031545_create_contacts_table.php
-    - database/migrations/2025_02_16_031546_create_contracts_table.php
-    - database/migrations/2025_02_16_031547_create_contract_products_table.php
-    - database/migrations/2025_02_16_031548_create_attachments_table.php
-    - database/migrations/2025_02_16_031549_create_ContractProduct_table.php
+    - database/migrations/2025_02_22_083326_create_products_table.php
+    - database/migrations/2025_02_22_083327_create_customers_table.php
+    - database/migrations/2025_02_22_083328_create_contacts_table.php
+    - database/migrations/2025_02_22_083329_create_contracts_table.php
+    - database/migrations/2025_02_22_083330_create_contract_products_table.php
+    - database/migrations/2025_02_22_083331_create_attachments_table.php
+    - database/migrations/2025_02_22_083332_create_ContractProduct_table.php
     - app/Models/Product.php
     - app/Models/Customer.php
     - app/Models/Contact.php
@@ -20,9 +20,9 @@ created:
     - app/Models/Attachment.php
 models:
     User: { name: string, region: 'string nullable', email: string, email_verified_at: 'timestamp nullable', password: string, remember_token: 'string:100 nullable' }
-    Product: { pn: string, price: 'decimal:10,2', year: 'unsignedInteger default:0', class: "string default:'n/a'", description: 'text:nullable', relationships: { belongsToMany: 'Contract through:ContractProduct' } }
-    Customer: { sap_no: unsignedInteger, name_chs: string, name_eng: string, file_no: "string default:'0'", locate: "string default:'n/a'", group: 'unsignedInteger default:0', relationships: { hasMany: 'Contract, Contact' }, indexes: [{ unique: sap_no }] }
+    Product: { pn: string, price: 'decimal:16,4', year: 'unsignedInteger default:0', class: "string default:'n/a'", description: 'text:nullable', relationships: { belongsToMany: 'Contract through:ContractProduct' } }
+    Customer: { sap_no: 'unsignedInteger default:0', name_chs: string, name_eng: string, file_no: "string default:'0'", locate: "string default:'n/a'", group: 'unsignedInteger default:0', relationships: { hasMany: 'Contract, Contact' } }
     Contact: { customer_id: 'foreignId:customers', name: string, email: 'string:nullable', phone: 'string:nullable', address: 'text:nullable', relationships: { belongsTo: Customer, hasMany: Contract } }
-    Contract: { contract_no: string, contract_region: "string default:'CD'", contract_date: date, contract_class: "string default:'VC'", contract_sales: "string default:'ML'", customer_id: 'foreignId:customers', contact_id: 'foreignId:contacts:nullable', contract_amount: 'decimal:8,2 default:0.00', contract_tax_rate: 'decimal:8,2 default:13.00', contract_amount_wtax: 'decimal:8,2 default:0.00', terms_origin: text, terms_delivery: text, terms_place_delivery: text, delivery_estimated: 'integer default:0', terms_payment: text, relationships: { belongsTo: 'Customer, Contact', hasMany: Attachment, belongsToMany: 'Product through:ContractProduct' }, indexes: [{ unique: contract_no }] }
-    ContractProduct: { contract_id: 'foreignId:contracts', product_id: 'foreignId:products', quantity: 'integer:default(1)', discount_rate: 'decimal:8,2', amount: 'decimal:8,2' }
+    Contract: { contract_no: string, contract_region: "string default:'CD'", contract_date: date, contract_class: "string default:'VC'", contract_sales: "string default:'ML'", customer_id: 'foreignId:customers', contact_id: 'foreignId:contacts:nullable', contract_amount: 'decimal:16,4 default:0.00', contract_tax_rate: 'decimal:16,4 default:13.00', contract_amount_wtax: 'decimal:16,4 default:0.00', terms_origin: text, terms_delivery: text, terms_place_delivery: text, delivery_estimated: 'integer default:0', terms_payment: text, relationships: { belongsTo: 'Customer, Contact', hasMany: Attachment, belongsToMany: 'Product through:ContractProduct' }, indexes: [{ unique: contract_no }] }
+    ContractProduct: { contract_id: 'foreignId:contracts', product_id: 'foreignId:products', quantity: 'integer:default(1)', discount_rate: 'decimal:16,4', amount: 'decimal:16,4' }
     Attachment: { contract_id: 'foreignId:contracts', file_path: string, file_name: string, mime_type: string, size: 'integer:unsigned', relationships: { belongsTo: Contract } }

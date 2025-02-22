@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('sap_no');
+            $table->unsignedInteger('sap_no')->default(0);
             $table->string('name_chs');
             $table->string('name_eng');
             $table->string('file_no')->default('0');
             $table->string('locate')->default('n/a');
-            $table->unsignedInteger('group')->default(0)->comment('1=End User - Std, 2=OEM, 3=Distributor, 4=Agent, 6=Reseller, 8=End User - Univ., 9=End User - Govt., 10=Intercompany, 11=Service Providers');
-            $table->unique('sap_no');
+            $table->unsignedInteger('group')->default(0);
             $table->timestamps();
         });
     }
