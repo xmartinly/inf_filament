@@ -1,12 +1,4 @@
 <?php
-/*
- * @Author: xmartinly 778567144@qq.com
- * @Date: 2025-02-01 17:52:36
- * @LastEditors: xmartinly 778567144@qq.com
- * @LastEditTime: 2025-02-02 19:33:19
- * @FilePath: \inf_filament\app\Filament\Resources\CustomerResource.php
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 
 namespace App\Filament\Resources;
 
@@ -25,10 +17,7 @@ class CustomerResource extends Resource
 {
     protected static ?string $model = Customer::class;
 
-    protected static ?int $navigationSort = 3;
-    protected static ?string $navigationLabel = '客户';
-
-    protected static ?string $navigationIcon = 'carbon-user-data';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -36,19 +25,25 @@ class CustomerResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('sap_no')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->default(0),
                 Forms\Components\TextInput::make('name_chs')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('name_eng')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('file_no')
+                    ->maxLength(255)
+                    ->default(0),
                 Forms\Components\TextInput::make('locate')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->default('n/a'),
                 Forms\Components\TextInput::make('group')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->default(0),
             ]);
     }
 
@@ -57,20 +52,19 @@ class CustomerResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('sap_no')
+                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name_chs')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name_eng')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('file_no')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('locate')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('group')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()

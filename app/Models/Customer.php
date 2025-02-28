@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Customer extends Model
 {
@@ -20,14 +19,4 @@ class Customer extends Model
         'sap_no' => 'integer',
         'group' => 'integer',
     ];
-
-    public function contracts(): HasMany
-    {
-        return $this->hasMany(Contract::class);
-    }
-
-    public function contacts(): HasMany
-    {
-        return $this->hasMany(Contact::class);
-    }
 }

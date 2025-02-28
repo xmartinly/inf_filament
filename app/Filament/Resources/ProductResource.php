@@ -1,12 +1,4 @@
 <?php
-/*
- * @Author: xmartinly 778567144@qq.com
- * @Date: 2025-02-01 13:13:49
- * @LastEditors: xmartinly 778567144@qq.com
- * @LastEditTime: 2025-02-02 22:49:28
- * @FilePath: \inf_filament\app\Filament\Resources\ProductResource.php
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 
 namespace App\Filament\Resources;
 
@@ -25,16 +17,43 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?int $navigationSort = 2;
-
-    protected static ?string $navigationLabel = '产品';
-
-    protected static ?string $navigationIcon = 'carbon-ibm-granite';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(Product::getForm());
+            ->schema([
+                Forms\Components\TextInput::make('pn')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('description')
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('list_price')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('target_price')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('limit_price')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('year')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\TextInput::make('currency')
+                    ->required()
+                    ->maxLength(255)
+                    ->default('CNY'),
+                Forms\Components\TextInput::make('comment')
+                    ->required()
+                    ->maxLength(255)
+                    ->default(''),
+                Forms\Components\TextInput::make('class')
+                    ->required()
+                    ->maxLength(255)
+                    ->default('n/a'),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -45,14 +64,23 @@ class ProductResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('price')
-                    ->money()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('class')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('list_price')
+                    ->numeric(),
+                Tables\Columns\TextColumn::make('target_price')
+                    ->numeric(),
+                Tables\Columns\TextColumn::make('limit_price')
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('year')
-                    ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('currency'),
+                Tables\Columns\TextColumn::make('class')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('comment')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

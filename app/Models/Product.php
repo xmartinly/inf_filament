@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
@@ -17,12 +16,9 @@ class Product extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'price' => 'decimal:4',
+        'list_price' => 'decimal:4',
+        'target_price' => 'decimal:4',
+        'limit_price' => 'decimal:4',
         'year' => 'integer',
     ];
-
-    public function contractThroughs(): BelongsToMany
-    {
-        return $this->belongsToMany(ContractThrough::class, 'ContractProduct');
-    }
 }
